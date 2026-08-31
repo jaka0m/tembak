@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Cari Paket Option / Family Code - Geo Project Web UI{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <h5 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2.5">
+            <i class="fa-solid fa-puzzle-piece text-purple-400 text-base"></i> Cari Paket Option & Family Code
+        </h5>
+        <a href="/" class="text-gray-400 hover:text-white text-sm whitespace-nowrap transition duration-300 hover:scale-105">
+            <i class="fa-solid fa-arrow-left mr-1"></i> Kembali ke Dashboard
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="glass border border-white/10 rounded-2xl p-6 shadow-md overflow-hidden hover:border-purple-500/20 transition duration-300">
+            <h2 class="text-lg font-bold text-emerald-400 mb-3 flex items-center gap-2">
+                <i class="fa-solid fa-bolt"></i> Cari via Option Code
+            </h2>
+            <form action="/packages/detail" method="GET" class="space-y-4">
+                <div class="min-w-0">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Option Code</label>
+                    <input type="text" name="option_code" placeholder="Masukkan option code..." required
+                           class="w-full bg-gray-950/70 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 font-mono text-xs sm:text-sm transition duration-200">
+                </div>
+                <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-5 py-2 rounded-lg transition duration-300 text-sm flex items-center gap-1.5 shadow-md shadow-emerald-600/20 hover:shadow-emerald-500/30">
+                    <i class="fa-solid fa-magnifying-glass"></i> Lihat Detail Paket
+                </button>
+            </form>
+        </div>
+
+        <div class="glass border border-white/10 rounded-2xl p-6 shadow-md overflow-hidden hover:border-purple-500/20 transition duration-300">
+            <h2 class="text-lg font-bold text-emerald-400 mb-3 flex items-center gap-2">
+                <i class="fa-solid fa-people-group"></i> Cari via Family Code
+            </h2>
+            <form action="/packages/option" method="GET" class="space-y-4">
+                <div class="min-w-0">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Family Code</label>
+                    <input type="text" name="family_code" value="{{ family_code }}" placeholder="Masukkan family code..." required
+                           class="w-full bg-gray-950/70 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 font-mono text-xs sm:text-sm transition duration-200">
+                </div>
+                <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-5 py-2 rounded-lg transition duration-300 text-sm flex items-center gap-1.5 shadow-md shadow-emerald-600/20 hover:shadow-emerald-500/30">
+                    <i class="fa-solid fa-list-ul"></i> Tampilkan Daftar Paket Family
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="glass border border-white/10 rounded-2xl p-6 shadow-md overflow-hidden hover:border-yellow-500/20 transition duration-300">
+        <h2 class="text-lg font-bold text-yellow-400 mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-rotate"></i> Loop Purchase Family Code
+        </h2>
+        <form action="/packages/loop-purchase" method="POST" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 items-end">
+            <div class="min-w-0">
+                <label class="block text-xs font-medium text-gray-300 mb-1">Family Code</label>
+                <input type="text" name="family_code" placeholder="Family Code" required
+                       class="w-full bg-gray-950/70 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20 text-sm font-mono transition duration-200">
+            </div>
+            <div class="min-w-0">
+                <label class="block text-xs font-medium text-gray-300 mb-1">Mulai dari Option #</label>
+                <input type="number" name="start_option" value="1" min="1" required
+                       class="w-full bg-gray-950/70 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20 text-sm transition duration-200">
+            </div>
+            <div class="min-w-0">
+                <label class="block text-xs font-medium text-gray-300 mb-1">Delay (detik)</label>
+                <input type="number" name="delay_seconds" value="0" min="0" required
+                       class="w-full bg-gray-950/70 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20 text-sm transition duration-200">
+            </div>
+            <div class="sm:col-span-2 md:col-span-1">
+                <button type="submit" class="w-full bg-yellow-600 hover:bg-yellow-500 text-white font-bold px-4 py-2 rounded-lg transition duration-300 text-sm flex items-center justify-center gap-1.5 shadow-lg shadow-yellow-600/20 hover:shadow-yellow-500/30">
+                    <i class="fa-solid fa-rocket"></i> Jalankan Loop
+                </button>
+            </div>
+        </form>
+    </div>
+
+    {% if family_name %}
+    <div class="glass border border-white/10 rounded-2xl p-6 shadow-lg hover:border-emerald-500/20 transition duration-300">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 border-b border-white/10 pb-3">
+            <h2 class="text-lg font-bold text-white break-words">Family: {{ family_name }}</h2>
+            <span class="text-xs text-gray-400 font-mono break-all shrink-0">Code: {{ family_code }}</span>
+        </div>
+
+        {% if options %}
+        <div class="space-y-3">
+            {% for opt in options %}
+            <div class="bg-gray-950/60 border border-white/10 rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-3 overflow-hidden hover:border-emerald-500/30 transition duration-300">
+                <div class="min-w-0 flex-1">
+                    <div class="font-bold text-emerald-400 break-words">{{ opt.variant_name }} - {{ opt.name }}</div>
+                    <div class="text-xs text-gray-300 mt-1 break-words">
+                        Harga: <strong class="text-yellow-400">Rp {{ opt.price }}</strong> &bull; Order: {{ opt.order }}
+                    </div>
+                    <div class="text-xs text-gray-500 font-mono mt-0.5 break-all">Option Code: {{ opt.package_option_code }}</div>
+                </div>
+                <div class="shrink-0 self-end md:self-center w-full md:w-auto pt-2 md:pt-0 border-t md:border-t-0 border-white/5">
+                    <a href="/packages/detail?option_code={{ opt.package_option_code }}"
+                       class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3.5 py-2 rounded-lg font-semibold transition duration-300 block text-center flex items-center justify-center gap-1.5 shadow-md shadow-emerald-600/20 hover:shadow-emerald-500/30">
+                        <i class="fa-solid fa-magnifying-glass"></i> Detail & Beli
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-400 text-sm italic">Tidak ada opsi paket dalam family code ini.</p>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+
+{% block title %}Detail Paket - MYnyak Engsel Web UI{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <h1 class="text-2xl sm:text-3xl font-bold text-white flex items-center gap-2.5">
+            <i class="fa-solid fa-box-open text-emerald-400"></i> Detail Paket
+        </h1>
+        <a href="javascript:history.back()" class="text-gray-400 hover:text-white text-sm whitespace-nowrap transition duration-300 hover:scale-105">
+            <i class="fa-solid fa-arrow-left mr-1"></i> Kembali
+        </a>
+    </div>
+
+    {% if package %}
+    <div class="glass border border-white/10 rounded-2xl p-6 shadow-lg space-y-6 overflow-hidden hover:border-emerald-500/20 transition duration-300">
+        <div class="flex flex-col md:flex-row justify-between gap-4 border-b border-white/10 pb-6">
+            <div class="min-w-0 flex-1">
+                <h2 class="text-xl font-extrabold text-emerald-400 break-words">{{ package.name }}</h2>
+                <div class="text-xs text-gray-400 mt-1 font-mono break-all">Option Code: {{ package.option_code }}</div>
+            </div>
+            <div class="text-left md:text-right shrink-0">
+                <div class="text-2xl font-black text-yellow-400 break-all">Rp {{ package.price }}</div>
+                <div class="text-xs text-gray-400 mt-0.5">Masa Aktif: {{ package.validity }} Hari &bull; Poin: {{ package.point }}</div>
+            </div>
+        </div>
+
+        {% if package.benefits %}
+        <div>
+            <h3 class="text-sm font-bold text-gray-300 uppercase tracking-wider mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-list-check text-emerald-400"></i> Benefit / Kuota Paket:
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {% for b in package.benefits %}
+                <div class="bg-gray-950/60 border border-white/10 p-3 rounded-lg text-sm text-emerald-300 font-medium break-words flex items-start gap-2 hover:border-emerald-500/30 transition duration-300">
+                    <i class="fa-solid fa-check text-emerald-400 mt-1 shrink-0"></i>
+                    <span>{{ b }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="flex justify-end">
+            <form action="/bookmarks/add" method="POST" class="inline flex items-center space-x-2">
+                <input type="hidden" name="family_code" value="{{ package.family_code }}">
+                <input type="hidden" name="is_enterprise" value="{{ package.is_enterprise }}">
+                <input type="hidden" name="variant_name" value="{{ package.variant_name }}">
+                <input type="hidden" name="option_name" value="{{ package.option_name }}">
+                <input type="hidden" name="order" value="{{ package.order }}">
+                <button type="submit" class="bg-yellow-600/80 hover:bg-yellow-600 text-white text-xs px-3.5 py-2 rounded-lg font-medium transition duration-300 flex items-center gap-1.5 shadow-md shadow-yellow-600/20 hover:shadow-yellow-500/30">
+                    <i class="fa-solid fa-star"></i> Simpan Ke Bookmark
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="glass border border-white/10 rounded-2xl p-6 shadow-lg overflow-hidden hover:border-sky-500/20 transition duration-300">
+        <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-credit-card text-sky-400"></i> Pilih Metode Pembayaran
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-gray-950/60 border border-white/10 p-5 rounded-xl space-y-3 flex flex-col justify-between hover:border-emerald-500/30 transition duration-300">
+                <div class="space-y-3">
+                    <h3 class="font-bold text-emerald-400 text-base flex items-center gap-2">
+                        <i class="fa-solid fa-bolt"></i> Potong Pulsa
+                    </h3>
+                    <p class="text-xs text-gray-400">Bayar langsung menggunakan saldo pulsa nomor aktif.</p>
+                </div>
+                <form action="/packages/pay/balance" method="POST" class="mt-4">
+                    <input type="hidden" name="option_code" value="{{ package.option_code }}">
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-lg text-sm transition duration-300 shadow-md shadow-emerald-600/20 hover:shadow-emerald-500/30">
+                        Bayar Pulsa Rp {{ package.price }}
+                    </button>
+                </form>
+            </div>
+
+            <div class="bg-gray-950/60 border border-white/10 p-5 rounded-xl space-y-3 flex flex-col justify-between hover:border-sky-500/30 transition duration-300">
+                <div class="space-y-3">
+                    <h3 class="font-bold text-sky-400 text-base flex items-center gap-2">
+                        <i class="fa-solid fa-qrcode"></i> Bayar QRIS
+                    </h3>
+                    <p class="text-xs text-gray-400">Generate QR code untuk pembayaran via GoPay/OVO/Dana/BCA, dll.</p>
+                </div>
+                <form action="/packages/pay/qris" method="POST" class="mt-4">
+                    <input type="hidden" name="option_code" value="{{ package.option_code }}">
+                    <button type="submit" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-2 rounded-lg text-sm transition duration-300 shadow-md shadow-sky-600/20 hover:shadow-sky-500/30">
+                        Generate QRIS Code
+                    </button>
+                </form>
+            </div>
+
+            <div class="bg-gray-950/60 border border-white/10 p-5 rounded-xl space-y-3 flex flex-col justify-between hover:border-purple-500/30 transition duration-300">
+                <form action="/packages/pay/ewallet" method="POST" class="space-y-3">
+                    <h3 class="font-bold text-purple-400 text-base flex items-center gap-2">
+                        <i class="fa-solid fa-wallet"></i> E-Wallet
+                    </h3>
+                    <input type="hidden" name="option_code" value="{{ package.option_code }}">
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Metode E-Wallet</label>
+                        <select name="method" class="w-full bg-gray-950/70 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition duration-200">
+                            <option value="DANA">DANA</option>
+                            <option value="SHOPEEPAY">ShopeePay</option>
+                            <option value="GOPAY">GoPay</option>
+                            <option value="OVO">OVO</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Nomor HP (Opsional)</label>
+                        <input type="text" name="wallet_number" placeholder="628xxx"
+                               class="w-full bg-gray-950/70 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition duration-200">
+                    </div>
+                    <button type="submit" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 rounded-lg text-sm transition duration-300 shadow-md shadow-purple-600/20 hover:shadow-purple-500/30">
+                        Bayar via E-Wallet
+                    </button>
+                </form>
+            </div>
+
+            <div class="bg-gray-950/60 border border-white/10 p-5 rounded-xl space-y-3 flex flex-col justify-between hover:border-amber-500/30 transition duration-300">
+                <div class="space-y-3">
+                    <h3 class="font-bold text-amber-400 text-base flex items-center gap-2">
+                        <i class="fa-solid fa-masks-theater"></i> Pulsa + Decoy
+                    </h3>
+                    <p class="text-xs text-gray-400">Trik potong pulsa menggunakan paket umpan/decoy.</p>
+                </div>
+                <div class="grid grid-cols-2 gap-2 mt-4">
+                    <form action="/packages/pay/decoy-balance" method="POST">
+                        <input type="hidden" name="option_code" value="{{ package.option_code }}">
+                        <input type="hidden" name="v2" value="0">
+                        <button type="submit" class="w-full bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold py-2 px-1 rounded-lg transition duration-300 text-center truncate shadow-md shadow-amber-600/20 hover:shadow-amber-500/30">
+                            Pulsa + Decoy V1
+                        </button>
+                    </form>
+                    <form action="/packages/pay/decoy-balance" method="POST">
+                        <input type="hidden" name="option_code" value="{{ package.option_code }}">
+                        <input type="hidden" name="v2" value="1">
+                        <button type="submit" class="w-full bg-amber-700 hover:bg-amber-600 text-white text-xs font-bold py-2 px-1 rounded-lg transition duration-300 text-center truncate shadow-md shadow-amber-700/20 hover:shadow-amber-600/30">
+                            Pulsa + Decoy V2
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="bg-gray-950/60 border border-white/10 p-5 rounded-xl space-y-3 flex flex-col justify-between hover:border-pink-500/30 transition duration-300">
+                <div class="space-y-3">
+                    <h3 class="font-bold text-pink-400 text-base flex items-center gap-2">
+                        <i class="fa-solid fa-receipt"></i> QRIS + Decoy
+                    </h3>
+                    <p class="text-xs text-gray-400">Generate QRIS dengan kombinasi decoy otomatis atau manual amount.</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <form action="/packages/pay/decoy-qris" method="POST">
+                            <input type="hidden" name="option_code" value="{{ package.option_code }}">
+                            <input type="hidden" name="decoy_type" value="qris">
+                            <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white text-xs font-bold py-2 px-1 rounded-lg transition duration-300 text-center truncate shadow-md shadow-pink-600/20 hover:shadow-pink-500/30">
+                                QRIS + Decoy V1
+                            </button>
+                        </form>
+                        <form action="/packages/pay/decoy-qris" method="POST">
+                            <input type="hidden" name="option_code" value="{{ package.option_code }}">
+                            <input type="hidden" name="decoy_type" value="qris0">
+                            <button type="submit" class="w-full bg-pink-700 hover:bg-pink-600 text-white text-xs font-bold py-2 px-1 rounded-lg transition duration-300 text-center truncate shadow-md shadow-pink-700/20 hover:shadow-pink-600/30">
+                                QRIS + Decoy V2
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <form action="/packages/pay/decoy-qris-manual" method="POST" class="pt-2 border-t border-white/10 flex items-center space-x-2 mt-4">
+                    <input type="hidden" name="option_code" value="{{ package.option_code }}">
+                    <input type="hidden" name="decoy_type" value="qris">
+                    <input type="number" name="amount" placeholder="Manual Rp" required
+                           class="w-full bg-gray-950/70 border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white min-w-0 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20 transition duration-200">
+                    <button type="submit" class="bg-pink-600 hover:bg-pink-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 transition duration-300 shadow-md shadow-pink-600/20 hover:shadow-pink-500/30">
+                        QRIS Manual
+                    </button>
+                </form>
+            </div>
+
+            <div class="bg-gray-950/60 border border-white/10 p-5 rounded-xl space-y-3 flex flex-col justify-between hover:border-indigo-500/30 transition duration-300">
+                <form action="/packages/pay/balance-n" method="POST" class="space-y-3 flex flex-col h-full justify-between">
+                    <div class="space-y-3">
+                        <h3 class="font-bold text-indigo-400 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-repeat"></i> Pulsa N Kali
+                        </h3>
+                        <p class="text-xs text-gray-400">Beli paket ini secara berulang N kali dengan jeda delay.</p>
+                        <input type="hidden" name="option_code" value="{{ package.option_code }}">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Jumlah (N)</label>
+                                <input type="number" name="count" value="1" min="1" required
+                                       class="w-full bg-gray-950/70 border border-white/10 rounded-lg px-2.5 py-1 text-xs text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition duration-200">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Delay (detik)</label>
+                                <input type="number" name="delay_seconds" value="0" min="0" required
+                                       class="w-full bg-gray-950/70 border border-white/10 rounded-lg px-2.5 py-1 text-xs text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition duration-200">
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <input type="checkbox" name="use_decoy" id="use_decoy" value="1"
+                                   class="rounded bg-gray-800 border-gray-700 text-emerald-500 focus:ring-0 focus:ring-emerald-500/20">
+                            <label for="use_decoy" class="text-xs text-gray-300">Gunakan Decoy Mode</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 rounded-lg text-sm transition duration-300 shadow-md shadow-indigo-600/20 hover:shadow-indigo-500/30">
+                        Jalankan Pembayaran N Kali
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="glass border border-dashed border-white/10 rounded-2xl p-8 text-center">
+        <div class="w-14 h-14 rounded-2xl bg-gray-800 text-gray-500 flex items-center justify-center mx-auto mb-3">
+            <i class="fa-solid fa-box-open text-xl"></i>
+        </div>
+        <p class="text-gray-400">Detail paket tidak ditemukan.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

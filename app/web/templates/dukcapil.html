@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Registrasi Dukcapil - MYnyak Engsel Web UI{% endblock %}
+{% block content %}
+<div class="space-y-6">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+            <div class="text-xs uppercase tracking-[.2em] text-emerald-400/80 mb-1">Registration</div>
+            <h1 class="text-2xl sm:text-3xl font-black text-white flex items-center gap-2.5">
+                <i class="fa-solid fa-address-card text-emerald-400"></i> Registrasi Kartu Dukcapil
+            </h1>
+        </div>
+        <a href="/" class="text-gray-400 hover:text-white text-sm whitespace-nowrap transition duration-300 hover:scale-105">
+            <i class="fa-solid fa-arrow-left mr-1"></i> Kembali ke Dashboard
+        </a>
+    </div>
+
+    <div class="glass border border-white/10 rounded-2xl p-5 sm:p-7 card max-w-xl mx-auto overflow-hidden hover:border-emerald-500/20 transition duration-300">
+        <h2 class="text-lg font-bold text-white mb-1 flex items-center gap-2">
+            <span class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+                <i class="fa-solid fa-file-lines"></i>
+            </span> Form Registrasi Dukcapil
+        </h2>
+        <p class="text-xs text-gray-500 mb-6 ml-11">Lengkapi data berikut untuk memproses registrasi.</p>
+
+        <form action="/dukcapil" method="POST" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-1.5">Nomor HP <span class="text-gray-500">(MSISDN: 628xxxx)</span></label>
+                <input type="text" name="msisdn" placeholder="628123456789" required
+                       class="input-modern w-full bg-gray-950/70 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition duration-200">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-1.5">Nomor Induk Kependudukan (NIK)</label>
+                <input type="text" name="nik" placeholder="320xxxxxxxxxxxxx" required
+                       class="input-modern w-full bg-gray-950/70 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 font-mono transition duration-200">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-1.5">Nomor Kartu Keluarga (KK)</label>
+                <input type="text" name="kk" placeholder="320xxxxxxxxxxxxx" required
+                       class="input-modern w-full bg-gray-950/70 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 font-mono transition duration-200">
+            </div>
+            <button type="submit" class="btn-modern w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-sm transition duration-300 flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20 hover:shadow-emerald-500/30">
+                <i class="fa-solid fa-rocket"></i> Submit Registrasi Dukcapil
+            </button>
+        </form>
+
+        {% if result %}
+        <div class="mt-6 pt-5 border-t border-white/10 overflow-hidden">
+            <h3 class="text-sm font-bold text-gray-200 mb-3 flex items-center gap-2">
+                <span class="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-400 flex items-center justify-center">
+                    <i class="fa-solid fa-terminal"></i>
+                </span> Hasil Respon API
+            </h3>
+            <pre class="bg-gray-950 border border-white/10 p-4 rounded-xl text-emerald-400 text-xs overflow-x-auto font-mono whitespace-pre-wrap break-all leading-relaxed">{{ result }}</pre>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

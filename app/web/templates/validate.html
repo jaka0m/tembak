@@ -4,39 +4,28 @@
 
 {% block content %}
 <div class="space-y-6">
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <h1 class="text-2xl sm:text-3xl font-bold text-white flex items-center gap-2.5">
-            <i class="fa-solid fa-shield-check text-emerald-400"></i> Validasi MSISDN
-        </h1>
-        <a href="/" class="text-gray-400 hover:text-white text-sm whitespace-nowrap transition duration-300 hover:scale-105">
-            <i class="fa-solid fa-arrow-left mr-1"></i> Kembali ke Dashboard
-        </a>
+  <div class="neu-card max-w-xl mx-auto">
+    <h2 class="text-base font-bold text-slate-100 mb-1 flex items-center gap-2">
+      <i class="fa-solid fa-shield-check text-indigo-400"></i> Validasi Nomor XL / Axis
+    </h2>
+    <p class="text-xs text-slate-400 mb-4">Validasi status nomor XL / Axis.</p>
+
+    <form action="/validate" method="POST" class="space-y-3">
+      <div>
+        <label class="neu-label">Nomor HP (MSISDN: 628xxx)</label>
+        <input type="text" name="msisdn" placeholder="628xxxxxxxxx" required class="neu-input font-mono">
+      </div>
+      <button type="submit" class="neu-btn neu-btn-primary btn-primary w-full py-2.5 text-xs">
+        <i class="fa-solid fa-magnifying-glass mr-1"></i> Validasi Nomor
+      </button>
+    </form>
+
+    {% if result %}
+    <div class="mt-6 pt-4 border-t border-slate-800/30">
+      <h3 class="neu-label mb-2">Hasil Respon API:</h3>
+      <pre class="neu-inset-card p-3 rounded-xl text-emerald-400 text-xs font-mono whitespace-pre-wrap break-all">{{ result }}</pre>
     </div>
-
-    <div class="glass border border-white/10 rounded-2xl p-4 sm:p-6 shadow-md max-w-xl mx-auto space-y-4 overflow-hidden hover:border-emerald-500/20 transition duration-300">
-        <h2 class="text-lg font-bold text-emerald-400 mb-2 flex items-center gap-2">
-            <i class="fa-solid fa-mobile-screen"></i> Validasi Nomor XL / Axis
-        </h2>
-
-        <form action="/validate" method="POST" class="space-y-4">
-            <div class="min-w-0">
-                <label class="block text-sm font-medium text-gray-300 mb-1">Nomor HP yang ingin divalidasi (MSISDN: 628xxxx)</label>
-                <input type="text" name="msisdn" placeholder="628123456789" required
-                       class="w-full bg-gray-950/70 border border-white/10 rounded-lg px-4 py-2 text-white text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 font-mono transition duration-200">
-            </div>
-            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-lg text-sm transition duration-300 flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20 hover:shadow-emerald-500/30">
-                <i class="fa-solid fa-magnifying-glass"></i> Validasi Nomor
-            </button>
-        </form>
-
-        {% if result %}
-        <div class="mt-6 pt-4 border-t border-white/10 overflow-hidden">
-            <h3 class="text-sm font-bold text-gray-200 mb-2 flex items-center gap-2">
-                <i class="fa-solid fa-terminal text-sky-400"></i> Hasil Respon API:
-            </h3>
-            <pre class="bg-gray-950 border border-white/10 p-4 rounded-lg text-emerald-400 text-xs overflow-x-auto font-mono whitespace-pre-wrap break-all">{{ result }}</pre>
-        </div>
-        {% endif %}
-    </div>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

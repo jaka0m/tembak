@@ -1,9 +1,9 @@
 [
     {
         "number": 6287864802948,
-        "subscriber_id": "209034830",
+        "subscriber_id": "123",
         "subscription_type": "PREPAID",
-        "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI3MDdhZmIwZS00YWU5LTRhYjUtOTNlMC1mZmRhMmYzYzk0NmQifQ.eyJleHAiOjE3OTIzMzUwNzAsImlhdCI6MTc4ODE1Njc0MCwianRpIjoiZjc3MDg1NzItMDRkNi00OGUwLWI5MDktZTFjNWU4MGYyNTEyIiwiaXNzIjoiaHR0cHM6Ly9nZWRlLmNpYW0ueGxheGlhdGEuY28uaWQvcmVhbG1zL3hsLWNpYW0iLCJhdWQiOiJodHRwczovL2dlZGUuY2lhbS54bGF4aWF0YS5jby5pZC9yZWFsbXMveGwtY2lhbSIsInN1YiI6ImViNDIyYmNlLTJhZWUtNDRhNS05ZmNjLTE1OGMxMTVhMzAxNyIsInR5cCI6IlJlZnJlc2giLCJhenAiOiI5ZmM5N2VkMS02YTMwLTQ4ZDUtOTUxNi02MGM1M2NlM2ExMzUiLCJzaWQiOiIyMjhmZTNiZC03NTFhLTQwZTMtYmVlYS0yZTllNjUxZDNjNzUiLCJzY29wZSI6Im9wZW5pZCBiYXNpYyBwcm9maWxlIHJvbGVzIGFjciB3ZWItb3JpZ2lucyBlbWFpbCJ9._7jaCvbtOP2HYHFEZjKjOwgm21Vk0M9V5U-wVpnuj5wtJKtyuAZWgwBlq4mKLKUX5vIoqIXB9E4l-UpuV6jFWw"
+        "refresh_token": "dummy"
     },
     {
         "number": 6287756116610,

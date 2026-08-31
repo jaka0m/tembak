@@ -1,0 +1,58 @@
+[
+    {
+        "family_name": "YouTube Quota Promo",
+        "family_code": "1fe292a5-5fef-430e-917b-e0eaeeb89f93",
+        "is_enterprise": null,
+        "variant_name": "YouTube Quota Promo",
+        "option_name": "YouTube 5GB",
+        "order": 3
+    },
+    {
+        "family_name": "Special For You",
+        "family_code": "6fda76ee-e789-4897-89fb-9114da47b805",
+        "is_enterprise": null,
+        "variant_name": "Special For You",
+        "option_name": "BONUS #TraktiranXL 28th Anniversary",
+        "order": 7
+    },
+    {
+        "family_name": "EduConference",
+        "family_code": "b249f4d5-bcca-4f11-81f4-c5bf26d61664",
+        "is_enterprise": null,
+        "variant_name": "EduConference",
+        "option_name": "30GB",
+        "order": 1
+    },
+    {
+        "family_name": "Conference",
+        "family_code": "5dab52d5-6f02-4678-b72f-088396ceb113",
+        "is_enterprise": null,
+        "variant_name": "Conference",
+        "option_name": "Conference 15GB",
+        "order": 3
+    },
+    {
+        "family_name": "ShopeeFood Packages",
+        "family_code": "11adf9c8-7003-447c-98e4-353d33a216b3",
+        "is_enterprise": null,
+        "variant_name": "ShopeeFood Packages",
+        "option_name": "Shopeefood 5GB",
+        "order": 3
+    },
+    {
+        "family_name": "Xtra Combo Flex - SP5K",
+        "family_code": "968ef2ad-4172-47b5-8e3f-8b0d5ad310a4",
+        "is_enterprise": null,
+        "variant_name": "Xtra Combo Flex",
+        "option_name": "Xtra Combo Flex XXL",
+        "order": 1
+    },
+    {
+        "family_name": "\u200e \u200eXtra Combo Lite",
+        "family_code": "fd0dc5d5-1c1b-4525-90b6-86ac2ee10ad0",
+        "is_enterprise": false,
+        "variant_name": "",
+        "option_name": "Xtra Combo",
+        "order": 1
+    }
+]

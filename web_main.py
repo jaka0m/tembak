@@ -147,6 +147,7 @@ async def dashboard(request: Request, msg: str = "", err: str = ""):
 
 # ================= ACCOUNTS / AUTH =================
 @app.get("/accounts", response_class=HTMLResponse)
+@app.get("/u/account", response_class=HTMLResponse)
 async def accounts_page(request: Request, msg: str = "", err: str = "", phone: str = "", otp_sent: bool = False):
     context = get_context(request, msg=msg, err=err)
     try:
@@ -215,6 +216,7 @@ async def delete_account_action(number: int = Form(...)):
 
 # ================= PACKAGES / MY PACKAGES =================
 @app.get("/packages", response_class=HTMLResponse)
+@app.get("/packages/my", response_class=HTMLResponse)
 async def packages_page(request: Request, msg: str = "", err: str = ""):
     context = get_context(request, msg=msg, err=err)
     api_key, tokens = get_active_auth_ctx()
@@ -332,8 +334,13 @@ async def hot2_page(request: Request, msg: str = "", err: str = ""):
 
 # ================= OPTION & FAMILY CODES =================
 @app.get("/packages/option", response_class=HTMLResponse)
-async def option_family_page(request: Request, family_code: str = "", msg: str = "", err: str = ""):
+@app.get("/packages/by-option", response_class=HTMLResponse)
+@app.get("/packages/by-family", response_class=HTMLResponse)
+async def option_family_page(request: Request, family_code: str = Query("", alias="code"), msg: str = "", err: str = ""):
     context = get_context(request, msg=msg, err=err)
+    if not family_code:
+        family_code = request.query_params.get("family_code", "")
+
     context["family_code"] = family_code
     context["family_name"] = ""
     context["options"] = []
@@ -366,6 +373,7 @@ async def option_family_page(request: Request, family_code: str = "", msg: str =
 
 
 @app.post("/packages/loop-purchase", response_class=HTMLResponse)
+@app.post("/purchase/family-loop", response_class=HTMLResponse)
 async def loop_purchase_action(
     family_code: str = Form(...),
     start_option: int = Form(1),
@@ -731,6 +739,7 @@ async def pay_balance_n_action(
 
 # ================= FAMILY PLAN (AKRAB) =================
 @app.get("/famplan", response_class=HTMLResponse)
+@app.get("/family-plan", response_class=HTMLResponse)
 async def famplan_page(request: Request, msg: str = "", err: str = ""):
     context = get_context(request, msg=msg, err=err)
     api_key, tokens = get_active_auth_ctx()
@@ -1028,6 +1037,7 @@ async def store_packages_page(request: Request, msg: str = "", err: str = ""):
 
 
 @app.get("/store/redeemables", response_class=HTMLResponse)
+@app.get("/store/redemables", response_class=HTMLResponse)
 async def store_redeemables_page(request: Request, msg: str = "", err: str = ""):
     context = get_context(request, msg=msg, err=err)
     context["title"] = "🎟️ Redeemables"
@@ -1053,6 +1063,7 @@ async def store_redeemables_page(request: Request, msg: str = "", err: str = "")
 
 # ================= HISTORY & NOTIFICATIONS =================
 @app.get("/history", response_class=HTMLResponse)
+@app.get("/transactions", response_class=HTMLResponse)
 async def history_page(request: Request, msg: str = "", err: str = ""):
     context = get_context(request, msg=msg, err=err)
     api_key, tokens = get_active_auth_ctx()
@@ -1101,6 +1112,7 @@ async def mark_all_notifications_action():
 
 # ================= BOOKMARKS =================
 @app.get("/bookmarks", response_class=HTMLResponse)
+@app.get("/bookmark", response_class=HTMLResponse)
 async def bookmarks_page(request: Request, msg: str = "", err: str = ""):
     context = get_context(request, msg=msg, err=err)
     try:
@@ -1161,6 +1173,7 @@ async def delete_bookmark_action(index: int = Form(...)):
 
 # ================= DUKCAPIL REGISTER & VALIDATE =================
 @app.get("/dukcapil", response_class=HTMLResponse)
+@app.get("/register", response_class=HTMLResponse)
 async def dukcapil_page(request: Request, msg: str = "", err: str = ""):
     context = get_context(request, msg=msg, err=err)
     context["result"] = ""
@@ -1180,6 +1193,7 @@ async def dukcapil_action(request: Request, msisdn: str = Form(...), nik: str = 
 
 
 @app.get("/validate", response_class=HTMLResponse)
+@app.get("/validate-msisdn", response_class=HTMLResponse)
 async def validate_page(request: Request, msg: str = "", err: str = ""):
     context = get_context(request, msg=msg, err=err)
     context["result"] = ""

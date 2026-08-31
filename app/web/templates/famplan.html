@@ -1,86 +1,69 @@
 {% extends "base.html" %}
 
-{% block title %}Family Plan / Akrab Organizer - MYnyak Engsel Web UI{% endblock %}
+{% block title %}Family Plan / Akrab - MYnyak Engsel Web UI{% endblock %}
 
 {% block content %}
 <div class="space-y-6">
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <h1 class="text-2xl sm:text-3xl font-bold text-white flex items-center gap-2.5">
-            <i class="fa-solid fa-people-roof text-emerald-400"></i> Family Plan / Akrab Organizer
-        </h1>
-        <a href="/" class="text-gray-400 hover:text-white text-sm whitespace-nowrap transition duration-300 hover:scale-105">
-            <i class="fa-solid fa-arrow-left mr-1"></i> Kembali ke Dashboard
-        </a>
+  {% if info %}
+  <div class="neu-card space-y-4">
+    <div class="flex flex-col sm:flex-row justify-between gap-4 border-b border-slate-800/30 pb-4">
+      <div>
+        <h2 class="text-lg font-bold text-indigo-300">Tipe Plan: {{ info.plan_type }}</h2>
+        <div class="text-xs text-slate-400 mt-1">Parent MSISDN: <span class="font-mono text-slate-200">{{ info.parent_msisdn }}</span></div>
+      </div>
+      <div class="text-left sm:text-right">
+        <div class="neu-label">Sisa Kuota Bersama</div>
+        <div class="text-base font-extrabold text-amber-400">{{ info.remaining_quota }} / {{ info.total_quota }}</div>
+      </div>
     </div>
 
-    {% if info %}
-    <div class="glass border border-white/10 rounded-2xl p-6 shadow-md space-y-4 overflow-hidden hover:border-emerald-500/20 transition duration-300">
-        <div class="flex flex-col sm:flex-row justify-between gap-4 border-b border-white/10 pb-4">
-            <div class="min-w-0 flex-1">
-                <h2 class="text-xl font-bold text-emerald-400 break-words">Tipe Plan: {{ info.plan_type }}</h2>
-                <div class="text-xs text-gray-400 mt-1 break-all">Parent MSISDN: <span class="font-mono text-white">{{ info.parent_msisdn }}</span></div>
-            </div>
-            <div class="text-left sm:text-right shrink-0">
-                <div class="text-sm font-semibold text-gray-300">Sisa Kuota Bersama</div>
-                <div class="text-base sm:text-xl font-extrabold text-yellow-400 mt-0.5 break-all">{{ info.remaining_quota }} / {{ info.total_quota }}</div>
-            </div>
+    <h3 class="text-sm font-bold text-slate-200 pt-2 flex items-center gap-2">
+      <i class="fa-solid fa-users text-indigo-400"></i> Anggota Family Plan:
+    </h3>
+
+    <div class="space-y-3">
+      {% for m in info.members %}
+      <div class="neu-card-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div>
+          <div class="font-bold text-slate-100 text-sm">Slot #{{ loop.index }}: {{ m.msisdn or '<Slot Kosong>' }} ({{ m.alias }})</div>
+          <div class="text-xs text-slate-400 mt-1">
+            Terpakai: <span class="text-emerald-300 font-medium">{{ m.used }}</span> | Limit: <span class="text-slate-200 font-medium">{{ m.allocated }}</span>
+          </div>
         </div>
 
-        <h3 class="text-base font-bold text-gray-200 pt-2 flex items-center gap-2">
-            <i class="fa-solid fa-users-rectangle text-sky-400"></i> Daftar Anggota Family Plan:
-        </h3>
-        <div class="space-y-3">
-            {% for m in info.members %}
-            <div class="bg-gray-950/55 border border-white/10 rounded-lg p-4 flex flex-col md:flex-row md:items-center justify-between gap-3 overflow-hidden hover:border-sky-500/30 hover:bg-gray-950/70 transition duration-300">
-                <div class="min-w-0 flex-1">
-                    <div class="font-bold text-white break-words">Slot #{{ loop.index }}: {{ m.msisdn or '<Slot Kosong>' }} ({{ m.alias }})</div>
-                    <div class="text-xs text-gray-400 mt-1 break-words">
-                        Kuota Terpakai: <span class="text-emerald-300 font-medium">{{ m.used }}</span> / Limit: <span class="text-gray-200 font-medium">{{ m.allocated }}</span>
-                    </div>
-                </div>
-
-                <div class="flex flex-wrap items-center gap-2 pt-2 md:pt-0 border-t md:border-t-0 border-white/5">
-                    {% if m.msisdn %}
-                    <form action="/famplan/remove" method="POST" onsubmit="return confirm('Hapus anggota ini dari Family Plan?');" class="shrink-0">
-                        <input type="hidden" name="slot_index" value="{{ loop.index }}">
-                        <button type="submit" class="bg-red-600/80 hover:bg-red-600 text-white text-xs px-3 py-1.5 rounded-lg font-medium transition duration-300 flex items-center gap-1 shadow-md shadow-red-600/20">
-                            <i class="fa-solid fa-trash-can"></i> Hapus
-                        </button>
-                    </form>
-                    <form action="/famplan/limit" method="POST" class="flex items-center space-x-1 shrink-0">
-                        <input type="hidden" name="slot_index" value="{{ loop.index }}">
-                        <input type="number" name="mb" placeholder="Limit MB" required
-                               class="w-24 bg-gray-950/70 border border-white/10 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 transition duration-200">
-                        <button type="submit" class="bg-sky-600 hover:bg-sky-500 text-white text-xs px-2.5 py-1 rounded-lg font-medium transition duration-300 flex items-center gap-1 shadow-md shadow-sky-600/20 hover:shadow-sky-500/30">
-                            <i class="fa-solid fa-gauge-high"></i> Limit
-                        </button>
-                    </form>
-                    {% else %}
-                    <form action="/famplan/change" method="POST" class="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full md:w-auto">
-                        <input type="hidden" name="slot_index" value="{{ loop.index }}">
-                        <input type="text" name="msisdn" placeholder="Nomor HP (628xxx)" required
-                               class="w-full md:w-28 bg-gray-950/70 border border-white/10 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition duration-200">
-                        <input type="text" name="parent_alias" placeholder="Parent Alias" required
-                               class="w-full md:w-24 bg-gray-950/70 border border-white/10 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition duration-200">
-                        <input type="text" name="child_alias" placeholder="Member Alias" required
-                               class="w-full md:w-24 bg-gray-950/70 border border-white/10 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition duration-200">
-                        <button type="submit" class="sm:col-span-3 md:col-span-auto bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-lg font-medium transition duration-300 text-center flex items-center justify-center gap-1 shadow-md shadow-emerald-600/20 hover:shadow-emerald-500/30">
-                            <i class="fa-solid fa-user-plus"></i> Tambah
-                        </button>
-                    </form>
-                    {% endif %}
-                </div>
-            </div>
-            {% endfor %}
+        <div class="flex flex-wrap items-center gap-2 self-end md:self-center">
+          {% if m.msisdn %}
+          <form action="/famplan/remove" method="POST" data-confirm="Hapus anggota dari Family Plan?">
+            <input type="hidden" name="slot_index" value="{{ loop.index }}">
+            <button type="submit" class="neu-btn neu-btn-danger btn-danger text-xs px-3 py-1.5">
+              <i class="fa-solid fa-trash mr-1"></i> Hapus
+            </button>
+          </form>
+          <form action="/famplan/limit" method="POST" class="flex items-center gap-1">
+            <input type="hidden" name="slot_index" value="{{ loop.index }}">
+            <input type="number" name="mb" placeholder="Limit MB" required class="neu-input text-xs w-24 py-1">
+            <button type="submit" class="neu-btn btn-primary text-xs px-2.5 py-1">Set Limit</button>
+          </form>
+          {% else %}
+          <form action="/famplan/change" method="POST" class="grid grid-cols-1 sm:grid-cols-3 md:flex items-center gap-2">
+            <input type="hidden" name="slot_index" value="{{ loop.index }}">
+            <input type="text" name="msisdn" placeholder="628xxx" required class="neu-input text-xs py-1">
+            <input type="text" name="parent_alias" placeholder="Parent Alias" required class="neu-input text-xs py-1">
+            <input type="text" name="child_alias" placeholder="Child Alias" required class="neu-input text-xs py-1">
+            <button type="submit" class="neu-btn neu-btn-primary btn-primary text-xs px-3 py-1.5">
+              <i class="fa-solid fa-user-plus mr-1"></i> Tambah
+            </button>
+          </form>
+          {% endif %}
         </div>
+      </div>
+      {% endfor %}
     </div>
-    {% else %}
-    <div class="glass border border-dashed border-white/10 rounded-2xl p-8 text-center">
-        <div class="w-14 h-14 rounded-2xl bg-gray-800 text-gray-500 flex items-center justify-center mx-auto mb-3">
-            <i class="fa-solid fa-people-roof text-xl"></i>
-        </div>
-        <p class="text-gray-400">Akun ini bukan organizer Family Plan atau tidak memiliki data Family Plan.</p>
-    </div>
-    {% endif %}
+  </div>
+  {% else %}
+  <div class="neu-card text-center py-8 text-slate-500 text-xs">
+    Akun ini bukan organizer Family Plan atau tidak memiliki data Family Plan.
+  </div>
+  {% endif %}
 </div>
 {% endblock %}

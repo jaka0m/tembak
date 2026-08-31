@@ -1,133 +1,129 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard - MYnyak Engsel Web UI{% endblock %}
+{% block title %}Beranda - MYnyak Engsel Sunset Web UI{% endblock %}
 
 {% block content %}
-<div class="space-y-6">
-    {% if profile %}
-    <div class="glass border border-white/10 rounded-2xl p-6 shadow-lg overflow-hidden hover:border-emerald-500/20 transition duration-300">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div class="min-w-0 flex-1">
-                <div class="flex flex-wrap items-center gap-2">
-                    <h4 class="text-xl sm:text-2xl font-bold text-white break-all flex items-center gap-2">
-                        <i class="fa-solid fa-mobile-screen-button text-emerald-400"></i> {{ profile.number }}
-                    </h4>
-                    <span class="px-3 py-1 bg-emerald-900/80 text-emerald-300 border border-emerald-600 rounded-full text-xs font-semibold shrink-0 animate-pulse">
-                        {{ profile.subscription_type }}
-                    </span>
-                </div>
-                <p class="text-gray-400 text-sm mt-1 break-all">Subscriber ID: {{ profile.subscriber_id }}</p>
-            </div>
-            <div class="flex items-center space-x-3 shrink-0">
-                <a href="/accounts" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-300 whitespace-nowrap flex items-center gap-1.5 shadow-md hover:shadow-lg">
-                    <i class="fa-solid fa-rotate"></i> Ganti Akun
-                </a>
-            </div>
+{% if profile %}
+<div class="neu-box-lg mb-6 p-6 relative overflow-hidden">
+  <div class="relative z-10">
+    <div class="flex items-start justify-between">
+      <div>
+        <div class="text-xs text-slate-400 uppercase tracking-wider">Nomor Aktif</div>
+        <div class="text-2xl sm:text-3xl font-bold text-slate-100 font-mono cursor-pointer" onclick="toggleMsisdn()">
+          <span id="msisdn-text">{{ profile.number }}</span>
+          <input type="hidden" id="msisdn-full" value="{{ profile.number }}">
         </div>
+        <div class="text-xs text-slate-400 mt-1">
+          <span class="neu-badge">{{ profile.subscription_type }}</span>
+          <span class="ml-2 text-slate-500">ID: {{ profile.subscriber_id }}</span>
+        </div>
+      </div>
+      <a href="/accounts" class="text-xs text-slate-400 hover:text-slate-200">Ganti akun ↗</a>
+    </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-            <div class="bg-gray-950/60 border border-white/10 p-4 rounded-xl hover:border-emerald-500/30 transition duration-300">
-                <div class="text-xs text-gray-400">PULSA UTAMA</div>
-                <div class="text-xl sm:text-2xl font-extrabold text-emerald-400 mt-1 break-all">Rp {{ profile.balance }}</div>
-                <div class="text-xs text-gray-400 mt-1 break-words">Aktif sampai: {{ profile.balance_expired_at }}</div>
-            </div>
-            <div class="bg-gray-950/60 border border-white/10 p-4 rounded-xl hover:border-emerald-500/30 transition duration-300">
-                <div class="text-xs text-gray-400">POIN & TIER</div>
-                <div class="text-base sm:text-lg font-bold text-yellow-400 mt-1 break-words">{{ profile.point_info }}</div>
-                <div class="text-xs text-gray-400 mt-1">Status Keanggotaan</div>
-            </div>
-            <div class="bg-gray-950/60 border border-white/10 p-4 rounded-xl hover:border-emerald-500/30 transition duration-300">
-                <div class="text-xs text-gray-400">MODE APLIKASI</div>
-                <div class="text-base sm:text-lg font-bold text-sky-400 mt-1 flex items-center gap-1.5">
-                    <i class="fa-solid fa-globe"></i> Web UI
-                </div>
-                <div class="text-xs text-gray-400 mt-1">Port 5000 Active</div>
-            </div>
-        </div>
+    <div class="flex flex-col gap-2 mt-6">
+      <div class="flex items-center justify-between gap-4 py-1">
+        <div class="text-[0.6rem] uppercase tracking-widest text-slate-500 shrink-0">Pulsa</div>
+        <div class="font-bold text-sm sm:text-base text-slate-200 text-right">Rp {{ profile.balance }}</div>
+      </div>
+      <div class="flex items-center justify-between gap-4 py-1">
+        <div class="text-[0.6rem] uppercase tracking-widest text-slate-500 shrink-0">Aktif s/d</div>
+        <div class="font-bold text-sm sm:text-base text-slate-200 text-right">{{ profile.balance_expired_at }}</div>
+      </div>
+      <div class="flex items-center justify-between gap-4 py-1">
+        <div class="text-[0.6rem] uppercase tracking-widest text-slate-500 shrink-0">Poin & Tier</div>
+        <div class="font-bold text-sm sm:text-base text-slate-200 text-right">{{ profile.point_info }}</div>
+      </div>
     </div>
-    {% else %}
-    <div class="glass border border-yellow-600/30 rounded-2xl p-6 text-center hover:border-yellow-500/50 transition duration-300">
-        <h2 class="text-xl font-bold text-yellow-300 flex items-center justify-center gap-2">
-            <i class="fa-solid fa-triangle-exclamation"></i> Belum Ada Akun Aktif
-        </h2>
-        <p class="text-gray-300 mt-2 text-sm">Silakan login atau pilih akun tersimpan terlebih dahulu.</p>
-        <a href="/accounts" class="mt-4 inline-block bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2 rounded-lg font-medium text-sm transition duration-300 shadow-lg shadow-emerald-600/20 hover:shadow-emerald-500/30">
-            Ke Halaman Akun & Login
-        </a>
-    </div>
-    {% endif %}
-
-    <!-- Kontainer Menu & Fitur Utama -->
-    <div class="glass border border-white/10 rounded-2xl p-6 shadow-lg hover:border-emerald-500/20 transition duration-300">
-        <h3 class="text-lg font-bold text-gray-200 mb-4 flex items-center gap-2">
-            <i class="fa-solid fa-grip text-emerald-400"></i> Menu & Fitur Utama
-        </h3>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-            <a href="/accounts" class="bg-gray-800/70 hover:bg-gray-700/70 border border-white/10 p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 group transition duration-300 hover:border-emerald-500/30 hover:scale-105">
-                <span class="text-2xl text-emerald-400 group-hover:scale-110 transition duration-300"><i class="fa-solid fa-user-gear"></i></span>
-                <span class="text-xs font-semibold text-gray-200 truncate w-full">Manajemen Akun</span>
-            </a>
-            <a href="/packages" class="bg-gray-800/70 hover:bg-gray-700/70 border border-white/10 p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 group transition duration-300 hover:border-emerald-500/30 hover:scale-105">
-                <span class="text-2xl text-sky-400 group-hover:scale-110 transition duration-300"><i class="fa-solid fa-box-archive"></i></span>
-                <span class="text-xs font-semibold text-gray-200 truncate w-full">Paket Saya</span>
-            </a>
-            <a href="/hot" class="bg-gray-800/70 hover:bg-gray-700/70 border border-white/10 p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 group transition duration-300 hover:border-emerald-500/30 hover:scale-105">
-                <span class="text-2xl text-orange-400 group-hover:scale-110 transition duration-300"><i class="fa-solid fa-fire"></i></span>
-                <span class="text-xs font-semibold text-gray-200 truncate w-full">Paket HOT</span>
-            </a>
-            <a href="/hot2" class="bg-gray-800/70 hover:bg-gray-700/70 border border-white/10 p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 group transition duration-300 hover:border-emerald-500/30 hover:scale-105">
-                <span class="text-2xl text-red-400 group-hover:scale-110 transition duration-300"><i class="fa-solid fa-fire-flame-curved"></i></span>
-                <span class="text-xs font-semibold text-gray-200 truncate w-full">Paket HOT2</span>
-            </a>
-            <a href="/packages/option" class="bg-gray-800/70 hover:bg-gray-700/70 border border-white/10 p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 group transition duration-300 hover:border-emerald-500/30 hover:scale-105">
-                <span class="text-2xl text-purple-400 group-hover:scale-110 transition duration-300"><i class="fa-solid fa-puzzle-piece"></i></span>
-                <span class="text-xs font-semibold text-gray-200 truncate w-full">Option / Family Code</span>
-            </a>
-            <a href="/famplan" class="bg-gray-800/70 hover:bg-gray-700/70 border border-white/10 p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 group transition duration-300 hover:border-emerald-500/30 hover:scale-105">
-                <span class="text-2xl text-indigo-400 group-hover:scale-110 transition duration-300"><i class="fa-solid fa-people-roof"></i></span>
-                <span class="text-xs font-semibold text-gray-200 truncate w-full">Family Plan / Akrab</span>
-            </a>
-            <a href="/circle" class="bg-gray-800/70 hover:bg-gray-700/70 border border-white/10 p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 group transition duration-300 hover:border-emerald-500/30 hover:scale-105">
-                <span class="text-2xl text-teal-400 group-hover:scale-110 transition duration-300"><i class="fa-solid fa-circle-nodes"></i></span>
-                <span class="text-xs font-semibold text-gray-200 truncate w-full">Circle</span>
-            </a>
-            <a href="/store/segments" class="bg-gray-800/70 hover:bg-gray-700/70 border border-white/10 p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 group transition duration-300 hover:border-emerald-500/30 hover:scale-105">
-                <span class="text-2xl text-amber-400 group-hover:scale-110 transition duration-300"><i class="fa-solid fa-store"></i></span>
-                <span class="text-xs font-semibold text-gray-200 truncate w-full">Store Segments</span>
-            </a>
-            <a href="/store/families" class="bg-gray-800/70 hover:bg-gray-700/70 border border-white/10 p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 group transition duration-300 hover:border-emerald-500/30 hover:scale-105">
-                <span class="text-2xl text-blue-400 group-hover:scale-110 transition duration-300"><i class="fa-solid fa-dna"></i></span>
-                <span class="text-xs font-semibold text-gray-200 truncate w-full">Store Families</span>
-            </a>
-            <a href="/store/packages" class="bg-gray-800/70 hover:bg-gray-700/70 border border-white/10 p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 group transition duration-300 hover:border-emerald-500/30 hover:scale-105">
-                <span class="text-2xl text-emerald-400 group-hover:scale-110 transition duration-300"><i class="fa-solid fa-cart-shopping"></i></span>
-                <span class="text-xs font-semibold text-gray-200 truncate w-full">Store Packages</span>
-            </a>
-            <a href="/store/redeemables" class="bg-gray-800/70 hover:bg-gray-700/70 border border-white/10 p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 group transition duration-300 hover:border-emerald-500/30 hover:scale-105">
-                <span class="text-2xl text-pink-400 group-hover:scale-110 transition duration-300"><i class="fa-solid fa-ticket"></i></span>
-                <span class="text-xs font-semibold text-gray-200 truncate w-full">Redeemables</span>
-            </a>
-            <a href="/history" class="bg-gray-800/70 hover:bg-gray-700/70 border border-white/10 p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 group transition duration-300 hover:border-emerald-500/30 hover:scale-105">
-                <span class="text-2xl text-yellow-400 group-hover:scale-110 transition duration-300"><i class="fa-solid fa-receipt"></i></span>
-                <span class="text-xs font-semibold text-gray-200 truncate w-full">Riwayat Transaksi</span>
-            </a>
-            <a href="/notifications" class="bg-gray-800/70 hover:bg-gray-700/70 border border-white/10 p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 group transition duration-300 hover:border-emerald-500/30 hover:scale-105">
-                <span class="text-2xl text-rose-400 group-hover:scale-110 transition duration-300"><i class="fa-solid fa-bell"></i></span>
-                <span class="text-xs font-semibold text-gray-200 truncate w-full">Notifikasi</span>
-            </a>
-            <a href="/bookmarks" class="bg-gray-800/70 hover:bg-gray-700/70 border border-white/10 p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 group transition duration-300 hover:border-emerald-500/30 hover:scale-105">
-                <span class="text-2xl text-yellow-400 group-hover:scale-110 transition duration-300"><i class="fa-solid fa-star"></i></span>
-                <span class="text-xs font-semibold text-gray-200 truncate w-full">Bookmark Paket</span>
-            </a>
-            <a href="/dukcapil" class="bg-gray-800/70 hover:bg-gray-700/70 border border-white/10 p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 group transition duration-300 hover:border-emerald-500/30 hover:scale-105">
-                <span class="text-2xl text-cyan-400 group-hover:scale-110 transition duration-300"><i class="fa-solid fa-address-card"></i></span>
-                <span class="text-xs font-semibold text-gray-200 truncate w-full">Register Dukcapil</span>
-            </a>
-            <a href="/validate" class="bg-gray-800/70 hover:bg-gray-700/70 border border-white/10 p-4 rounded-xl text-center flex flex-col items-center justify-center space-y-2 group transition duration-300 hover:border-emerald-500/30 hover:scale-105">
-                <span class="text-2xl text-emerald-400 group-hover:scale-110 transition duration-300"><i class="fa-solid fa-shield-check"></i></span>
-                <span class="text-xs font-semibold text-gray-200 truncate w-full">Validate MSISDN</span>
-            </a>
-        </div>
-    </div>
+  </div>
 </div>
+{% else %}
+<div class="neu-box-lg mb-6 p-6 text-center">
+  <div class="w-12 h-12 rounded-full neu-box flex items-center justify-center mx-auto mb-3 text-amber-400">
+    <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+  </div>
+  <h2 class="text-lg font-bold text-slate-100">Belum Ada Akun Aktif</h2>
+  <p class="text-xs text-slate-400 mt-1">Silakan request OTP atau pilih akun tersimpan di halaman Kelola Akun.</p>
+  <a href="/accounts" class="btn btn-primary mt-4 text-xs inline-block">Ke Halaman Kelola Akun</a>
+</div>
+{% endif %}
+
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+  <a href="/packages" class="card-link card-stat text-center">
+    <div class="card-stat-icon text-indigo-400 mb-2"><i class="fa-solid fa-box-archive text-lg"></i></div>
+    <div class="text-lg font-bold text-slate-200">Paket Saya</div>
+    <div class="text-xs text-slate-400 mt-1">Daftar paket aktif</div>
+  </a>
+  <a href="/history" class="card-link card-stat text-center">
+    <div class="card-stat-icon text-yellow-400 mb-2"><i class="fa-solid fa-receipt text-lg"></i></div>
+    <div class="text-lg font-bold text-slate-200">Riwayat</div>
+    <div class="text-xs text-slate-400 mt-1">Transaksi akun</div>
+  </a>
+  <a href="/bookmarks" class="card-link card-stat text-center">
+    <div class="card-stat-icon text-amber-400 mb-2"><i class="fa-solid fa-star text-lg"></i></div>
+    <div class="text-lg font-bold text-slate-200">Bookmark</div>
+    <div class="text-xs text-slate-400 mt-1">Paket favorit</div>
+  </a>
+  <a href="/notifications" class="card-link card-stat text-center">
+    <div class="card-stat-icon text-rose-400 mb-2"><i class="fa-solid fa-bell text-lg"></i></div>
+    <div class="text-lg font-bold text-slate-200">Notifikasi</div>
+    <div class="text-xs text-slate-400 mt-1">Pesan & info</div>
+  </a>
+</div>
+
+<section class="mb-6">
+  <h2 class="text-sm uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+    <i class="fa-solid fa-cart-shopping text-xs"></i> Beli Paket
+  </h2>
+  <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">
+    <a class="card-action card-action-sm" href="/hot">
+      <span class="card-action-icon text-orange-400"><i class="fa-solid fa-fire text-base"></i></span>
+      <span class="card-action-label">Hot Deals</span>
+    </a>
+    <a class="card-action card-action-sm" href="/hot2">
+      <span class="card-action-icon text-red-400"><i class="fa-solid fa-fire-flame-curved text-base"></i></span>
+      <span class="card-action-label">Hot-2</span>
+    </a>
+    <a class="card-action card-action-sm" href="/packages/option">
+      <span class="card-action-icon text-purple-400"><i class="fa-solid fa-puzzle-piece text-base"></i></span>
+      <span class="card-action-label">Option / Family</span>
+    </a>
+    <a class="card-action card-action-sm" href="/store/packages">
+      <span class="card-action-icon text-emerald-400"><i class="fa-solid fa-store text-base"></i></span>
+      <span class="card-action-label">Cari Toko</span>
+    </a>
+  </div>
+</section>
+
+<section class="mb-6">
+  <h2 class="text-sm uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+    <i class="fa-solid fa-users text-xs"></i> Komunitas & Family
+  </h2>
+  <div class="grid grid-cols-2 gap-2">
+    <a class="card-action card-action-sm" href="/famplan">
+      <span class="card-action-icon text-indigo-400"><i class="fa-solid fa-people-roof text-base"></i></span>
+      <span class="card-action-label">Akrab (Family Plan)</span>
+    </a>
+    <a class="card-action card-action-sm" href="/circle">
+      <span class="card-action-icon text-teal-400"><i class="fa-solid fa-circle-nodes text-base"></i></span>
+      <span class="card-action-label">Circle</span>
+    </a>
+  </div>
+</section>
+
+<section>
+  <h2 class="text-sm uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+    <i class="fa-solid fa-wrench text-xs"></i> Utility & Registrasi
+  </h2>
+  <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+    <a class="card-action card-action-sm" href="/dukcapil">
+      <span class="card-action-icon text-cyan-400"><i class="fa-solid fa-address-card text-base"></i></span>
+      <span class="card-action-label">Dukcapil Register</span>
+    </a>
+    <a class="card-action card-action-sm" href="/validate">
+      <span class="card-action-icon text-emerald-400"><i class="fa-solid fa-shield-check text-base"></i></span>
+      <span class="card-action-label">Validate MSISDN</span>
+    </a>
+  </div>
+</section>
 {% endblock %}

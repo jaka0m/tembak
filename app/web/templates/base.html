@@ -1,169 +1,970 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Geo Project Sunset Web UI{% endblock %}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#f0fdf4', 100: '#dcfce7', 500: '#22c55e',
-                            600: '#16a34a', 700: '#15803d', 800: '#166534', 900: '#14532d'
-                        }
-                    },
-                    boxShadow: {
-                        glow: '0 0 30px rgba(34,197,94,.12)',
-                        card: '0 12px 35px rgba(0,0,0,.24)'
-                    }
-                }
-            }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}MYnyak Engsel Sunset Web UI{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { 50:'#eef2ff',400:'#818cf8',500:'#6366f1',600:'#4f46e5',700:'#4338ca' }
+          }
         }
-    </script>
-    <style>
-        html { scroll-behavior: smooth; }
-        body {
-            background:
-                radial-gradient(circle at 15% 0%, rgba(34,197,94,.09), transparent 30rem),
-                radial-gradient(circle at 90% 10%, rgba(14,165,233,.07), transparent 28rem),
-                #090d12;
-            min-height: 100vh;
-        }
-        .no-scrollbar::-webkit-scrollbar { display:none; }
-        .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
-        .glass {
-            background:rgba(17,24,39,.72);
-            backdrop-filter:blur(16px);
-            -webkit-backdrop-filter:blur(16px);
-            border: 1px solid rgba(255,255,255,0.06);
-        }
-        .card {
-            box-shadow:0 12px 35px rgba(0,0,0,.22);
-        }
-        .input-modern {
-            transition: border-color .2s, box-shadow .2s, background .2s, transform .2s;
-        }
-        .input-modern:focus {
-            box-shadow:0 0 0 3px rgba(34,197,94,.12);
-            transform:translateY(-1px);
-        }
-        .btn-modern {
-            transition:transform .2s, box-shadow .2s, filter .2s;
-        }
-        .btn-modern:hover {
-            transform:translateY(-2px);
-            box-shadow:0 8px 22px rgba(0,0,0,.2);
-        }
-        .btn-modern:active { transform:translateY(0); }
-        .nav-link {
-            transition:all .2s;
-            position: relative;
-        }
-        .nav-link:hover {
-            background:rgba(55,65,81,.75);
-            transform:translateY(-1px);
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: #22c55e;
-            transition: all .3s ease;
-            transform: translateX(-50%);
-        }
-        .nav-link:hover::after {
-            width: 60%;
-        }
-        .glass-card-hover {
-            transition: all .3s ease;
-        }
-        .glass-card-hover:hover {
-            border-color: rgba(34,197,94,0.3);
-            box-shadow: 0 0 30px rgba(34,197,94,0.05);
-        }
-    </style>
+      }
+    }
+  </script>
+  <script>
+    function toggleMsisdn() {
+      const span = document.getElementById('msisdn-text');
+      const hidden = document.getElementById('msisdn-full');
+      if (!span || !hidden) return;
+      if (span.textContent === '••••••••••') {
+        span.textContent = hidden.value;
+      } else {
+        span.textContent = '••••••••••';
+      }
+    }
+  </script>
+  <style>
+/* ========================================================================
+   NEUMORPHIC DARK — inspired by mhmdsairi.my.id
+   Background: #0f172a (slate-900), shadows: #060a12 (dark) / #182442 (light)
+   No borders — shadows define elevation
+   ======================================================================== */
+
+body {
+  background: #0f172a;
+  color: #f1f5f9;
+}
+
+/* --- Neumorphic utilities --- */
+.neu-box {
+  background: #0f172a;
+  box-shadow: 8px 8px 16px #060a12, -8px -8px 16px #182442;
+  border-radius: 24px;
+}
+.neu-box-sm {
+  background: #0f172a;
+  box-shadow: 6px 6px 12px #060a12, -6px -6px 12px #182442;
+  border-radius: 16px;
+}
+.neu-box-lg {
+  background: #0f172a;
+  box-shadow: 10px 10px 20px #060a12, -10px -10px 20px #182442;
+  border-radius: 28px;
+}
+.neu-input {
+  background: #0f172a !important;
+  box-shadow: inset 4px 4px 8px #060a12, inset -4px -4px 8px #182442 !important;
+  border-radius: 16px !important;
+  border: none !important;
+  padding: 12px 16px;
+  color: #f8fafc;
+  width: 100%;
+  font-size: 0.875rem;
+  outline: none;
+  transition: all 0.2s;
+}
+.neu-input:focus {
+  box-shadow: inset 4px 4px 8px #060a12, inset -4px -4px 8px #182442, 0 0 0 2px #4f46e560 !important;
+}
+.neu-btn {
+  background: #0f172a !important;
+  box-shadow: 8px 8px 16px #060a12, -8px -8px 16px #182442 !important;
+  border-radius: 16px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  letter-spacing: 0.03em;
+  color: #cbd5e1;
+}
+.neu-btn:active {
+  box-shadow: inset 6px 6px 12px #060a12, inset -6px -6px 12px #182442 !important;
+}
+.neu-btn-primary {
+  color: #fff !important;
+  letter-spacing: 0.05em;
+}
+.neu-btn-primary:active {
+  box-shadow: inset 6px 6px 12px #060a12, inset -6px -6px 12px #182442 !important;
+}
+.neu-btn-danger {
+  color: #fca5a5 !important;
+}
+.neu-btn-danger:active {
+  box-shadow: inset 6px 6px 12px #060a12, inset -6px -6px 12px #182442 !important;
+}
+.neu-card {
+  background: #0f172a;
+  box-shadow: 6px 6px 12px #060a12, -6px -6px 12px #182442;
+  border-radius: 20px;
+  padding: 1.25rem;
+  transition: all 0.2s ease;
+}
+.neu-card:hover {
+  box-shadow: 8px 8px 16px #060a12, -8px -8px 16px #182442;
+}
+.neu-card-sm {
+  background: #0f172a;
+  box-shadow: 4px 4px 8px #060a12, -4px -4px 8px #182442;
+  border-radius: 16px;
+  padding: 1rem;
+  transition: all 0.2s ease;
+}
+.neu-card-sm:hover {
+  box-shadow: 6px 6px 12px #060a12, -6px -6px 12px #182442;
+}
+.card {
+  background: #0f172a;
+  box-shadow: 6px 6px 12px #060a12, -6px -6px 12px #182442;
+  border-radius: 20px;
+  padding: 1.25rem;
+  transition: all 0.2s ease;
+  color: #e2e8f0;
+}
+.card pre {
+  background: #0f172a;
+  box-shadow: inset 3px 3px 6px #060a12, inset -3px -3px 6px #182442;
+  border-radius: 12px;
+  padding: 0.75rem;
+}
+.neu-progress {
+  height: 0.5rem;
+  border-radius: 9999px;
+  overflow: hidden;
+  background: #0f172a;
+  box-shadow: inset 2px 2px 4px #060a12, inset -2px -2px 4px #182442;
+}
+.neu-progress-bar {
+  height: 100%;
+  background: linear-gradient(to right, #6366f1, #8b5cf6);
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+.neu-label {
+  display: block;
+  font-size: 0.65rem;
+  color: #64748b;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+  margin-left: 0.25rem;
+}
+
+/* --- Alerts --- */
+.neu-alert-error {
+  background: #0f172a;
+  box-shadow: 6px 6px 12px #060a12, -6px -6px 12px #182442;
+  border-radius: 16px;
+  padding: 0.75rem 1rem;
+  color: #fecaca;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  border-left: 3px solid #ef4444;
+}
+.neu-alert-success {
+  background: #0f172a;
+  box-shadow: 6px 6px 12px #060a12, -6px -6px 12px #182442;
+  border-radius: 16px;
+  padding: 0.75rem 1rem;
+  color: #bbf7d0;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  border-left: 3px solid #22c55e;
+}
+
+.card-link {
+  display: block;
+  padding: 1rem;
+  background: #0f172a;
+  box-shadow: 4px 4px 8px #060a12, -4px -4px 8px #182442;
+  border-radius: 16px;
+  border: none;
+  color: #e2e8f0;
+  text-decoration: none;
+  transition: all 0.15s;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.card-link:hover {
+  box-shadow: 6px 6px 12px #060a12, -6px -6px 12px #182442;
+  color: #f1f5f9;
+}
+.card-stat {
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.card-stat:active {
+  box-shadow: inset 3px 3px 6px #060a12, inset -3px -3px 6px #182442;
+}
+.card-stat-icon {
+  line-height: 0;
+  opacity: 0.85;
+}
+.card-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 0.75rem;
+  background: #0f172a;
+  box-shadow: 4px 4px 8px #060a12, -4px -4px 8px #182442;
+  border-radius: 16px;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #e2e8f0;
+  transition: all 0.15s;
+  min-height: 90px;
+}
+.card-action:hover {
+  box-shadow: 6px 6px 12px #060a12, -6px -6px 12px #182442;
+}
+.card-action-sm {
+  gap: 0.35rem;
+  padding: 0.55rem 0.35rem;
+  min-height: 68px;
+  font-size: 0.68rem;
+  border-radius: 12px;
+  box-shadow: 3px 3px 6px #060a12, -3px -3px 6px #182442;
+}
+.card-action-sm:hover {
+  box-shadow: 4px 4px 8px #060a12, -4px -4px 8px #182442;
+}
+.card-action-icon {
+  line-height: 0;
+  opacity: 0.85;
+}
+.card-action-icon svg {
+  width: 18px;
+  height: 18px;
+}
+.card-action-label {
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  border-radius: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.1s;
+  line-height: 1.2;
+  border: none;
+  letter-spacing: 0.03em;
+  background: #0f172a;
+  box-shadow: 6px 6px 12px #060a12, -6px -6px 12px #182442;
+}
+.btn:active {
+  box-shadow: inset 5px 5px 10px #060a12, inset -5px -5px 10px #182442 !important;
+}
+.btn-primary {
+  background: #0f172a;
+  color: #a5b4fc;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+.btn-secondary {
+  background: #0f172a;
+  color: #cbd5e1;
+}
+.btn-danger {
+  background: #0f172a;
+  color: #fca5a5;
+}
+
+.form-input {
+  background: #0f172a !important;
+  box-shadow: inset 4px 4px 8px #060a12, inset -4px -4px 8px #182442 !important;
+  border-radius: 16px !important;
+  border: none !important;
+  padding: 12px 16px;
+  color: #f8fafc;
+  width: 100%;
+  font-size: 0.875rem;
+  outline: none;
+  transition: all 0.2s;
+}
+.form-input:focus {
+  box-shadow: inset 4px 4px 8px #060a12, inset -4px -4px 8px #182442, 0 0 0 2px #4f46e560 !important;
+}
+.label {
+  display: block;
+  font-size: 0.65rem;
+  color: #64748b;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+  margin-left: 0.25rem;
+}
+
+/* --- Confirm modal --- */
+.confirm-modal {
+  padding: max(1rem, env(safe-area-inset-top, 0px))
+           max(1rem, env(safe-area-inset-right, 0px))
+           max(1rem, env(safe-area-inset-bottom, 0px))
+           max(1rem, env(safe-area-inset-left, 0px));
+  box-sizing: border-box;
+}
+.confirm-modal__panel {
+  background: #0f172a;
+  box-shadow: 10px 10px 20px #060a12, -10px -10px 20px #182442;
+  border-radius: 24px;
+  margin: auto;
+  max-height: calc(100dvh - 2rem);
+  max-height: calc(100svh - 2rem);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  transform: scale(0.96);
+  opacity: 0;
+  transition: transform 150ms ease-out, opacity 150ms ease-out;
+}
+
+/* --- Page loader --- */
+.page-loader__panel {
+  background: #0f172a;
+  box-shadow: 12px 12px 24px #060a12, -12px -12px 24px #182442;
+  border-radius: 24px;
+}
+.page-loader__ring--outer {
+  border: 3px solid #1e293b;
+}
+.page-loader__ring--spin {
+  border: 3px solid transparent;
+  border-top-color: #818cf8;
+  border-right-color: #818cf850;
+  animation: loader-spin 0.9s linear infinite;
+}
+.page-loader__ring--pulse {
+  border: 2px solid #6366f170;
+  animation: loader-pulse 1.6s ease-in-out infinite;
+}
+.page-loader.is-payment .page-loader__ring--spin {
+  border-top-color: #34d399;
+  border-right-color: #34d39950;
+}
+.page-loader.is-payment .page-loader__ring--pulse {
+  border-color: #10b98180;
+}
+.page-loader.is-payment .page-loader__panel {
+  box-shadow: 0 12px 24px #060a12, -12px -12px 24px #182442;
+}
+.page-loader__icon {
+  animation: loader-icon-bob 1.2s ease-in-out infinite;
+}
+.page-loader__bar {
+  height: 4px;
+  width: 100%;
+  background: #1e293b;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.page-loader__bar-fill {
+  height: 100%;
+  width: 42%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #4f46e5, #34d399, #818cf8);
+  animation: loader-bar-slide 1.4s ease-in-out infinite;
+}
+.page-loader.is-payment .page-loader__bar-fill {
+  background: linear-gradient(90deg, #10b981, #34d399, #6ee7b7);
+}
+.page-loader__dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.35rem;
+}
+.page-loader__dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #94a3b8;
+  animation: loader-dot-bounce 1.1s ease-in-out infinite;
+}
+.page-loader.is-payment .page-loader__dots span {
+  background: #34d399;
+}
+.page-loader__dots span:nth-child(2) { animation-delay: 0.15s; }
+.page-loader__dots span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes loader-spin { to { transform: rotate(360deg); } }
+@keyframes loader-pulse {
+  0%, 100% { transform: scale(0.92); opacity: 0.55; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+@keyframes loader-icon-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+@keyframes loader-bar-slide {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(280%); }
+}
+@keyframes loader-dot-bounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.45; }
+  40% { transform: translateY(-5px); opacity: 1; }
+}
+
+/* --- Sidebar transition --- */
+#sidebar { transition: transform 0.2s ease; }
+
+.neu-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 14px;
+  font-size: 0.875rem;
+  color: #94a3b8;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+.neu-sidebar-link:hover {
+  background: #0f172a;
+  box-shadow: 5px 5px 10px #060a12, -5px -5px 10px #182442;
+  color: #e2e8f0;
+}
+.neu-sidebar-link.active {
+  background: #0f172a;
+  box-shadow: 5px 5px 10px #060a12, -5px -5px 10px #182442;
+  color: #a5b4fc;
+}
+.neu-sidebar-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  background: #0f172a;
+  box-shadow: 3px 3px 6px #060a12, -3px -3px 6px #182442;
+  flex-shrink: 0;
+}
+.neu-sidebar-link.active .neu-sidebar-icon {
+  box-shadow: inset 3px 3px 6px #060a12, inset -3px -3px 6px #182442;
+}
+
+/* --- Dropdown parent --- */
+.neu-sidebar-dropdown {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #94a3b8;
+  padding: 0.6rem 0.75rem;
+  margin-top: 0.75rem;
+  border-radius: 12px;
+  background: #0f172a;
+  box-shadow: 4px 4px 8px #060a12, -4px -4px 8px #182442;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+.neu-sidebar-dropdown:hover {
+  color: #e2e8f0;
+  box-shadow: 5px 5px 10px #060a12, -5px -5px 10px #182442;
+}
+.neu-sidebar-dropdown.open {
+  color: #c7d2fe;
+  box-shadow: inset 4px 4px 8px #060a12, inset -4px -4px 8px #182442;
+}
+.neu-sidebar-dropdown .chevron {
+  transition: transform 0.25s ease;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+.neu-sidebar-dropdown.open .chevron {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+/* --- Collapsible children --- */
+.neu-sidebar-children {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-left: 0.5rem;
+}
+.neu-sidebar-children.open {
+  max-height: 600px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.neu-sidebar-children .neu-sidebar-link {
+  padding-left: 1rem;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  border-left: 2px solid transparent;
+}
+.neu-sidebar-children .neu-sidebar-link:hover,
+.neu-sidebar-children .neu-sidebar-link.active {
+  border-left-color: #818cf8;
+}
+
+/* --- Bottom nav icons neumorphic --- */
+.neu-bottom-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: #0f172a;
+  box-shadow: 4px 4px 8px #060a12, -4px -4px 8px #182442;
+  margin-bottom: 0.25rem;
+}
+.neu-bottom-icon.active {
+  box-shadow: inset 4px 4px 8px #060a12, inset -4px -4px 8px #182442;
+  color: #818cf8;
+}
+
+/* --- Header icons --- */
+.neu-header-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: #0f172a;
+  box-shadow: 3px 3px 6px #060a12, -3px -3px 6px #182442;
+}
+.neu-header-icon-round {
+  border-radius: 50%;
+}
+
+/* --- Scrollbar --- */
+#sidebar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+*::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+* {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+/* --- Tabs neumorphic --- */
+.neu-tabs {
+  background: #0f172a;
+  box-shadow: inset 3px 3px 6px #060a12, inset -3px -3px 6px #182442;
+  border-radius: 16px;
+  padding: 4px;
+}
+.neu-tab {
+  padding: 0.6rem 1rem;
+  border-radius: 14px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: all 0.15s;
+  cursor: pointer;
+  color: #64748b;
+  text-align: center;
+}
+.neu-tab-active {
+  background: #0f172a;
+  box-shadow: 4px 4px 8px #060a12, -4px -4px 8px #182442;
+  color: #a5b4fc;
+}
+
+.neu-stat {
+  background: #0f172a;
+  box-shadow: 4px 4px 8px #060a12, -4px -4px 8px #182442;
+  border-radius: 14px;
+  padding: 0.75rem 1rem;
+}
+.neu-inset-card {
+  box-shadow: inset 3px 3px 6px #060a12, inset -3px -3px 6px #182442;
+}
+.neu-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  color: #e2e8f0;
+}
+  </style>
 </head>
-<body class="text-gray-100 min-h-screen flex flex-col font-sans selection:bg-emerald-500/30 antialiased">
-    <nav class="glass border-b border-white/10 sticky top-0 z-50 shadow-lg backdrop-blur-xl">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between min-h-16 py-2 gap-3">
-                <div class="flex items-center min-w-0">
-                    <a href="/" class="flex items-center gap-2.5 text-emerald-400 font-black text-lg sm:text-xl tracking-wide shrink-0 group">
-                        <span class="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shadow-glow group-hover:shadow-emerald-500/20 transition duration-300">
-                            <i class="fa-solid fa-bolt"></i>
-                        </span>
-                        <span class="group-hover:text-emerald-300 transition duration-300">Geo Project</span>
-                    </a>
-                </div>
-                <div class="hidden lg:flex items-center gap-1 text-xs xl:text-sm font-medium">
-                    <a href="/" class="nav-link px-3 py-2 rounded-xl">Dashboard</a>
-                    <a href="/accounts" class="nav-link px-3 py-2 rounded-xl">Akun</a>
-                    <a href="/packages" class="nav-link px-3 py-2 rounded-xl">Paket Saya</a>
-                    <a href="/hot" class="nav-link px-3 py-2 rounded-xl"><i class="fa-solid fa-fire text-orange-400 mr-1"></i>HOT</a>
-                    <a href="/hot2" class="nav-link px-3 py-2 rounded-xl"><i class="fa-solid fa-fire-flame-curved text-red-400 mr-1"></i>HOT2</a>
-                    <a href="/packages/option" class="nav-link px-3 py-2 rounded-xl">Option/Family</a>
-                    <a href="/famplan" class="nav-link px-3 py-2 rounded-xl">FamPlan</a>
-                    <a href="/circle" class="nav-link px-3 py-2 rounded-xl">Circle</a>
-                    <a href="/store/packages" class="nav-link px-3 py-2 rounded-xl">Store</a>
-                    <a href="/history" class="nav-link px-3 py-2 rounded-xl">Riwayat</a>
-                    <a href="/bookmarks" class="nav-link px-3 py-2 rounded-xl">Bookmark</a>
-                </div>
-                <div class="flex items-center shrink-0">
-                    {% if active_user %}
-                        <span class="bg-emerald-500/10 text-emerald-300 border border-emerald-500/25 px-3 py-1.5 rounded-full font-mono text-[11px] sm:text-xs truncate max-w-[145px] sm:max-w-[210px] flex items-center gap-1.5 shadow-glow animate-pulse">
-                            <i class="fa-solid fa-circle-check text-emerald-400"></i> {{ active_user.number }} ({{ active_user.subscription_type }})
-                        </span>
-                    {% else %}
-                        <a href="/accounts" class="btn-modern bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-2 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap flex items-center gap-1.5 shadow-lg shadow-emerald-600/20 hover:shadow-emerald-500/30">
-                            <i class="fa-solid fa-right-to-bracket"></i> Login Akun
-                        </a>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="lg:hidden flex overflow-x-auto py-2.5 gap-2 border-t border-white/5 no-scrollbar">
-                <a href="/" class="nav-link px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-gray-200 whitespace-nowrap text-xs">Dashboard</a>
-                <a href="/accounts" class="nav-link px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-gray-200 whitespace-nowrap text-xs">Akun</a>
-                <a href="/packages" class="nav-link px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-gray-200 whitespace-nowrap text-xs">Paket Saya</a>
-                <a href="/hot" class="nav-link px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-gray-200 whitespace-nowrap text-xs"><i class="fa-solid fa-fire text-orange-400"></i> HOT</a>
-                <a href="/hot2" class="nav-link px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-gray-200 whitespace-nowrap text-xs"><i class="fa-solid fa-fire-flame-curved text-red-400"></i> HOT2</a>
-                <a href="/packages/option" class="nav-link px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-gray-200 whitespace-nowrap text-xs">Option/Family</a>
-                <a href="/famplan" class="nav-link px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-gray-200 whitespace-nowrap text-xs">FamPlan</a>
-                <a href="/circle" class="nav-link px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-gray-200 whitespace-nowrap text-xs">Circle</a>
-                <a href="/store/packages" class="nav-link px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-gray-200 whitespace-nowrap text-xs">Store</a>
-                <a href="/history" class="nav-link px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-gray-200 whitespace-nowrap text-xs">Riwayat</a>
-                <a href="/bookmarks" class="nav-link px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-gray-200 whitespace-nowrap text-xs">Bookmark</a>
-                <a href="/notifications" class="nav-link px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-gray-200 whitespace-nowrap text-xs">Notif</a>
-                <a href="/dukcapil" class="nav-link px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-gray-200 whitespace-nowrap text-xs">Register</a>
-                <a href="/validate" class="nav-link px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-gray-200 whitespace-nowrap text-xs">Validate</a>
-            </div>
+<body class="min-h-screen antialiased overflow-x-hidden">
+
+<!-- GLOBAL LOADER -->
+<div id="page-loader" class="page-loader fixed inset-0 z-50 flex items-center justify-center pointer-events-none" style="opacity:0; transition: opacity 150ms ease;">
+  <div class="page-loader__backdrop absolute inset-0 bg-[#0f172a]/88 backdrop-blur-md"></div>
+  <div class="page-loader__panel relative flex flex-col items-center gap-5 px-8 py-7 text-center max-w-sm mx-4">
+    <div class="page-loader__spinner relative w-20 h-20">
+      <div class="page-loader__ring page-loader__ring--outer absolute inset-0 rounded-full"></div>
+      <div class="page-loader__ring page-loader__ring--spin absolute inset-1 rounded-full"></div>
+      <div class="page-loader__ring page-loader__ring--pulse absolute inset-3 rounded-full"></div>
+      <div class="page-loader__icon absolute inset-0 flex items-center justify-center text-2xl text-indigo-400" id="page-loader-icon">
+        <i class="fa-solid fa-spinner fa-spin"></i>
+      </div>
+    </div>
+    <div class="w-full space-y-2">
+      <div id="page-loader-msg" class="text-sm font-medium text-slate-200">Memuat…</div>
+      <div id="page-loader-sub" class="text-xs text-slate-500">Tunggu sebentar ya</div>
+      <div id="page-loader-bar" class="page-loader__bar hidden" aria-hidden="true">
+        <div class="page-loader__bar-fill"></div>
+      </div>
+      <div id="page-loader-dots" class="page-loader__dots hidden" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div id="confirm-modal" class="confirm-modal fixed inset-0 z-[60] flex items-center justify-center pointer-events-none" style="opacity:0; transition: opacity 150ms ease;">
+  <div id="confirm-backdrop" class="absolute inset-0 bg-[#0f172a]/70 backdrop-blur-sm"></div>
+  <div id="confirm-panel" class="confirm-modal__panel relative w-[calc(100%-2rem)] max-w-md transition-transform duration-150 ease-out">
+    <div class="p-5 sm:p-6">
+      <div class="flex items-start gap-3">
+        <div id="confirm-icon" class="w-11 h-11 rounded-full flex items-center justify-center shrink-0 bg-amber-500/15 text-amber-300 border border-amber-500/30">
+          <i class="fa-solid fa-triangle-exclamation"></i>
         </div>
-    </nav>
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        {% if msg %}
-            <div class="mb-5 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 text-emerald-200 break-words flex items-start gap-3 card animate-slideDown">
-                <span class="w-8 h-8 rounded-lg bg-emerald-500/15 flex items-center justify-center shrink-0"><i class="fa-solid fa-circle-check text-emerald-400"></i></span>
-                <span class="pt-1">{{ msg }}</span>
-            </div>
-        {% endif %}
-        {% if err %}
-            <div class="mb-5 p-4 rounded-2xl bg-red-500/10 border border-red-500/25 text-red-200 break-words flex items-start gap-3 card animate-slideDown">
-                <span class="w-8 h-8 rounded-lg bg-red-500/15 flex items-center justify-center shrink-0"><i class="fa-solid fa-triangle-exclamation text-red-400"></i></span>
-                <span class="pt-1">{{ err }}</span>
-            </div>
-        {% endif %}
-        {% block content %}{% endblock %}
-    </main>
-    <footer class="border-t border-white/10 bg-black/20 py-5 text-center text-xs text-gray-500">
-        <div class="flex items-center justify-center gap-2">
-            <i class="fa-solid fa-bolt text-emerald-500"></i> Geo Project Sunset Web UI <span>•</span> Running on Port 5000
+        <div class="min-w-0 flex-1">
+          <h3 id="confirm-title" class="font-bold text-base sm:text-lg text-slate-100 leading-snug">Konfirmasi</h3>
+          <div id="confirm-message" class="text-sm text-slate-300 mt-1 leading-relaxed">Yakin mau lanjut?</div>
         </div>
-    </footer>
+      </div>
+      <div id="confirm-detail-wrap" class="mt-4 hidden">
+        <div id="confirm-detail" class="text-xs text-slate-400 bg-[#0f172a] border border-slate-800 rounded-xl p-3 font-mono break-all"></div>
+      </div>
+      <div class="flex gap-2 mt-5 justify-end">
+        <button type="button" id="confirm-cancel" class="btn btn-secondary text-sm px-4">Batal</button>
+        <button type="button" id="confirm-ok" class="btn btn-primary text-sm px-4">Lanjut</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOPBAR -->
+<header class="neu-box-sm backdrop-blur sticky top-0 z-30 mx-2 mt-2">
+  <div class="flex items-center justify-between px-4 h-14 lg:pl-72">
+    <div class="flex items-center gap-3">
+      <button id="nav-toggle" class="neu-header-icon lg:hidden text-slate-300 hover:text-white" aria-label="menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <a href="/" class="flex items-center gap-1.5 font-bold text-lg">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        <span class="bg-gradient-to-r from-indigo-400 to-fuchsia-400 bg-clip-text text-transparent">MYnyak Engsel</span>
+      </a>
+    </div>
+    <div class="flex items-center gap-2 text-sm ml-auto mr-0">
+      {% if active_user %}
+        <input type="hidden" id="msisdn-full" value="{{ active_user.number }}">
+        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full neu-box-sm text-slate-200 font-bold border border-transparent shrink-0">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span class="text-xs cursor-pointer font-mono" onclick="toggleMsisdn()" id="msisdn-text">{{ active_user.number }}</span>
+        </div>
+        <a href="/accounts" class="neu-header-icon neu-header-icon-round text-xs text-slate-400 hover:text-indigo-300 shrink-0" title="Ganti Akun">
+          <i class="fa-solid fa-users text-xs"></i>
+        </a>
+      {% else %}
+        <a href="/accounts" class="btn btn-primary text-xs px-3 py-1.5 flex items-center gap-1">
+          <i class="fa-solid fa-right-to-bracket text-xs"></i> Login Akun
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</header>
+
+<!-- SIDEBAR (desktop) + DRAWER (mobile) -->
+<aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-[#0f172a] z-40 transform -translate-x-full lg:translate-x-0 transition-transform flex flex-col border-r border-slate-800/30" style="box-shadow: 4px 0 20px rgba(6,10,18,0.5);">
+  <div class="p-4 hidden lg:block shrink-0">
+    <div class="flex items-center gap-1.5 font-bold text-lg">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+      <span class="bg-gradient-to-r from-indigo-400 to-fuchsia-400 bg-clip-text text-transparent">MYnyak Engsel</span>
+    </div>
+    <div class="text-xs text-slate-500">Sunset Web UI</div>
+  </div>
+  <nav class="p-3 space-y-1 flex-1 overflow-y-auto" id="sidebar-nav">
+    <a href="/" class="neu-sidebar-link {% if request.url.path == '/' %}active{% endif %}">
+      <span class="neu-sidebar-icon"><i class="fa-solid fa-house text-xs"></i></span>
+      <span>Beranda</span>
+    </a>
+    <a href="/accounts" class="neu-sidebar-link {% if request.url.path == '/accounts' %}active{% endif %}">
+      <span class="neu-sidebar-icon"><i class="fa-solid fa-user-gear text-xs"></i></span>
+      <span>Kelola Akun</span>
+    </a>
+    <a href="/packages" class="neu-sidebar-link {% if request.url.path == '/packages' or request.url.path == '/packages/my' %}active{% endif %}">
+      <span class="neu-sidebar-icon"><i class="fa-solid fa-box-archive text-xs"></i></span>
+      <span>Paket Saya</span>
+    </a>
+
+    <div class="neu-sidebar-dropdown" data-group="Beli Paket">
+      <span>Beli Paket</span>
+      <svg class="chevron w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="neu-sidebar-children">
+      <a href="/hot" class="neu-sidebar-link {% if request.url.path == '/hot' %}active{% endif %}"><i class="fa-solid fa-fire text-orange-400 mr-2 text-xs"></i> Hot</a>
+      <a href="/hot2" class="neu-sidebar-link {% if request.url.path == '/hot2' %}active{% endif %}"><i class="fa-solid fa-fire-flame-curved text-red-400 mr-2 text-xs"></i> Hot-2</a>
+      <a href="/packages/option" class="neu-sidebar-link {% if request.url.path == '/packages/option' or request.url.path == '/packages/by-option' %}active{% endif %}"><i class="fa-solid fa-puzzle-piece text-purple-400 mr-2 text-xs"></i> Option / Family Code</a>
+      <a href="/bookmarks" class="neu-sidebar-link {% if request.url.path == '/bookmarks' or request.url.path == '/bookmark' %}active{% endif %}"><i class="fa-solid fa-star text-yellow-400 mr-2 text-xs"></i> Bookmark Paket</a>
+    </div>
+
+    <div class="neu-sidebar-dropdown" data-group="Komunitas">
+      <span>Komunitas</span>
+      <svg class="chevron w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="neu-sidebar-children">
+      <a href="/famplan" class="neu-sidebar-link {% if request.url.path == '/famplan' or request.url.path == '/family-plan' %}active{% endif %}"><i class="fa-solid fa-people-roof text-indigo-400 mr-2 text-xs"></i> Akrab (Family Plan)</a>
+      <a href="/circle" class="neu-sidebar-link {% if request.url.path == '/circle' %}active{% endif %}"><i class="fa-solid fa-circle-nodes text-teal-400 mr-2 text-xs"></i> Circle</a>
+    </div>
+
+    <div class="neu-sidebar-dropdown" data-group="Toko">
+      <span>Toko</span>
+      <svg class="chevron w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="neu-sidebar-children">
+      <a href="/store/segments" class="neu-sidebar-link {% if request.url.path == '/store/segments' %}active{% endif %}"><i class="fa-solid fa-store text-amber-400 mr-2 text-xs"></i> Segments</a>
+      <a href="/store/families" class="neu-sidebar-link {% if request.url.path == '/store/families' %}active{% endif %}"><i class="fa-solid fa-dna text-blue-400 mr-2 text-xs"></i> Families</a>
+      <a href="/store/packages" class="neu-sidebar-link {% if request.url.path == '/store/packages' %}active{% endif %}"><i class="fa-solid fa-cart-shopping text-emerald-400 mr-2 text-xs"></i> All Packages</a>
+      <a href="/store/redeemables" class="neu-sidebar-link {% if request.url.path == '/store/redeemables' or request.url.path == '/store/redemables' %}active{% endif %}"><i class="fa-solid fa-ticket text-pink-400 mr-2 text-xs"></i> Redeemables</a>
+    </div>
+
+    <div class="neu-sidebar-dropdown" data-group="Lainnya">
+      <span>Lainnya</span>
+      <svg class="chevron w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="neu-sidebar-children">
+      <a href="/history" class="neu-sidebar-link {% if request.url.path == '/history' or request.url.path == '/transactions' %}active{% endif %}"><i class="fa-solid fa-receipt text-yellow-400 mr-2 text-xs"></i> Transaksi</a>
+      <a href="/notifications" class="neu-sidebar-link {% if request.url.path == '/notifications' %}active{% endif %}"><i class="fa-solid fa-bell text-rose-400 mr-2 text-xs"></i> Notifikasi</a>
+      <a href="/dukcapil" class="neu-sidebar-link {% if request.url.path == '/dukcapil' or request.url.path == '/register' %}active{% endif %}"><i class="fa-solid fa-address-card text-cyan-400 mr-2 text-xs"></i> Register Dukcapil</a>
+      <a href="/validate" class="neu-sidebar-link {% if request.url.path == '/validate' or request.url.path == '/validate-msisdn' %}active{% endif %}"><i class="fa-solid fa-shield-check text-emerald-400 mr-2 text-xs"></i> Validate MSISDN</a>
+    </div>
+  </nav>
+  <div class="mt-auto p-4 text-xs text-slate-600 space-y-2 border-t border-slate-800/30 text-center">
+    <div>MYnyak Engsel Sunset</div>
+    <div class="text-[10px] text-slate-500">Port 5000</div>
+  </div>
+</aside>
+
+<!-- Backdrop -->
+<div id="nav-backdrop" class="lg:hidden fixed inset-0 bg-black/50 z-30 hidden"></div>
+
+<!-- MAIN -->
+<main class="lg:pl-64 pb-20 lg:pb-8 min-w-0 max-w-full overflow-x-clip">
+  <div class="px-4 py-6 max-w-5xl mx-auto min-w-0 w-full">
+    {% if msg %}
+      <div class="neu-alert-success flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-circle-check text-emerald-400"></i>
+          <span>{{ msg }}</span>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if err %}
+      <div class="neu-alert-error flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-triangle-exclamation text-red-400"></i>
+          <span>{{ err }}</span>
+        </div>
+      </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </div>
+</main>
+
+<!-- BOTTOM NAV (mobile) -->
+<nav class="lg:hidden fixed bottom-0 inset-x-0 z-30 neu-box-sm mx-2 mb-2">
+  <div class="grid grid-cols-5 text-xs">
+    <a href="/packages" class="flex flex-col items-center py-2.5 text-slate-400 {% if request.url.path == '/packages' %}text-indigo-300{% endif %}">
+      <span class="neu-bottom-icon {% if request.url.path == '/packages' %}active{% endif %}"><i class="fa-solid fa-box-archive text-sm"></i></span>Paket
+    </a>
+    <a href="/hot" class="flex flex-col items-center py-2.5 text-slate-400 {% if request.url.path == '/hot' %}text-indigo-300{% endif %}">
+      <span class="neu-bottom-icon {% if request.url.path == '/hot' %}active{% endif %}"><i class="fa-solid fa-fire text-sm text-orange-400"></i></span>Hot
+    </a>
+    <a href="/" class="flex flex-col items-center py-2.5 text-indigo-300">
+      <span class="neu-bottom-icon {% if request.url.path == '/' %}active{% endif %}"><i class="fa-solid fa-house text-sm"></i></span>Home
+    </a>
+    <a href="/history" class="flex flex-col items-center py-2.5 text-slate-400 {% if request.url.path == '/history' %}text-indigo-300{% endif %}">
+      <span class="neu-bottom-icon {% if request.url.path == '/history' %}active{% endif %}"><i class="fa-solid fa-receipt text-sm"></i></span>Riwayat
+    </a>
+    <a href="/accounts" class="flex flex-col items-center py-2.5 text-slate-400 {% if request.url.path == '/accounts' %}text-indigo-300{% endif %}">
+      <span class="neu-bottom-icon {% if request.url.path == '/accounts' %}active{% endif %}"><i class="fa-solid fa-user-gear text-sm"></i></span>Akun
+    </a>
+  </div>
+</nav>
+
+<script>
+(function(){
+  const sb = document.getElementById('sidebar'),
+        bd = document.getElementById('nav-backdrop'),
+        bt = document.getElementById('nav-toggle');
+  function open(){ sb.classList.remove('-translate-x-full'); bd.classList.remove('hidden'); initDropdowns(); }
+  function close(){ sb.classList.add('-translate-x-full'); bd.classList.add('hidden'); }
+  bt && bt.addEventListener('click', open);
+  bd && bd.addEventListener('click', close);
+
+  function initDropdowns() {
+    const dropdowns = document.querySelectorAll('.neu-sidebar-dropdown');
+    dropdowns.forEach(dd => {
+      if (dd.dataset.init) return;
+      dd.dataset.init = '1';
+      dd.addEventListener('click', () => {
+        const children = dd.nextElementSibling;
+        const isOpen = dd.classList.contains('open');
+
+        dropdowns.forEach(other => {
+          if (other !== dd && other.nextElementSibling) {
+            other.classList.remove('open');
+            other.nextElementSibling.classList.remove('open');
+          }
+        });
+
+        if (isOpen) {
+          dd.classList.remove('open');
+          children.classList.remove('open');
+        } else {
+          dd.classList.add('open');
+          children.classList.add('open');
+        }
+      });
+    });
+  }
+
+  const activeLinks = document.querySelectorAll('.neu-sidebar-link.active');
+  activeLinks.forEach(link => {
+    const parent = link.closest('.neu-sidebar-children');
+    if (parent) {
+      parent.classList.add('open');
+      const dropdown = parent.previousElementSibling;
+      if (dropdown && dropdown.classList.contains('neu-sidebar-dropdown')) {
+        dropdown.classList.add('open');
+      }
+    }
+  });
+
+  initDropdowns();
+})();
+
+function formHttpMethod(form) {
+  return (form.getAttribute('method') || 'get').toUpperCase();
+}
+
+(function(){
+  const modal = document.getElementById('confirm-modal');
+  if (!modal) return;
+  const backdrop = document.getElementById('confirm-backdrop'),
+        panel = document.getElementById('confirm-panel'),
+        iconEl = document.getElementById('confirm-icon'),
+        titleEl = document.getElementById('confirm-title'),
+        msgEl = document.getElementById('confirm-message'),
+        detailWrap = document.getElementById('confirm-detail-wrap'),
+        detailEl = document.getElementById('confirm-detail'),
+        okBtn = document.getElementById('confirm-ok'),
+        cancelBtn = document.getElementById('confirm-cancel');
+  let pending = null;
+
+  function applyVariant(v) {
+    iconEl.className = 'w-11 h-11 rounded-full flex items-center justify-center shrink-0 border bg-amber-500/15 text-amber-300 border-amber-500/30';
+    okBtn.className = 'btn btn-primary text-sm px-4';
+  }
+
+  function show({title, message, detail, variant, okText, cancelText}, onOk, onCancel) {
+    applyVariant(variant);
+    titleEl.textContent = title || 'Konfirmasi';
+    msgEl.innerHTML = message || 'Yakin mau lanjut?';
+    if (detail) { detailEl.textContent = detail; detailWrap.classList.remove('hidden'); }
+    else { detailWrap.classList.add('hidden'); }
+    okBtn.textContent = okText || 'Lanjut';
+    cancelBtn.textContent = cancelText || 'Batal';
+    pending = { onOk, onCancel };
+    modal.style.opacity = '1';
+    modal.classList.remove('pointer-events-none');
+    panel.style.transform = 'scale(1)';
+    panel.style.opacity = '1';
+  }
+
+  function hide(cancelled) {
+    modal.style.opacity = '0';
+    modal.classList.add('pointer-events-none');
+    panel.style.transform = 'scale(0.96)';
+    panel.style.opacity = '0';
+    const p = pending; pending = null;
+    if (p && cancelled && p.onCancel) p.onCancel();
+  }
+
+  okBtn.addEventListener('click', () => {
+    const p = pending; pending = null;
+    modal.style.opacity = '0';
+    modal.classList.add('pointer-events-none');
+    if (p && p.onOk) p.onOk();
+  });
+  cancelBtn.addEventListener('click', () => hide(true));
+  backdrop.addEventListener('click', () => hide(true));
+
+  window.__confirm = show;
+
+  document.addEventListener('submit', function(e){
+    const f = e.target;
+    if (!(f instanceof HTMLFormElement)) return;
+    if (!f.hasAttribute('data-confirm')) return;
+    if (f.dataset.__confirmed) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    const msg = f.getAttribute('data-confirm') || 'Yakin mau lanjut?';
+    show({ message: msg }, () => {
+      f.dataset.__confirmed = '1';
+      if (window.__loader) window.__loader.show('Memproses...');
+      f.submit();
+    }, null);
+  }, true);
+
+  document.addEventListener('click', function(e){
+    const a = e.target.closest('a[data-confirm]');
+    if (!a) return;
+    if (a.dataset.__confirmed) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    const msg = a.getAttribute('data-confirm') || 'Yakin mau lanjut?';
+    show({ message: msg }, () => {
+      a.dataset.__confirmed = '1';
+      if (window.__loader) window.__loader.show('Memproses...');
+      window.location.href = a.href;
+    }, null);
+  }, true);
+})();
+
+(function(){
+  const loader = document.getElementById('page-loader');
+  const msg = document.getElementById('page-loader-msg');
+  if (!loader) return;
+
+  function show(text) {
+    if (text && msg) msg.textContent = text;
+    loader.style.opacity = '1';
+    loader.classList.remove('pointer-events-none');
+  }
+  function hide() {
+    loader.style.opacity = '0';
+    loader.classList.add('pointer-events-none');
+  }
+  window.__loader = { show, hide };
+
+  window.addEventListener('pageshow', hide);
+  document.addEventListener('DOMContentLoaded', hide);
+})();
+</script>
 </body>
 </html>
